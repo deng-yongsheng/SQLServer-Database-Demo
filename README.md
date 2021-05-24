@@ -12,6 +12,22 @@
 | 统计|
 | 错误日志|
 
+## 班级表的原始结构
+
+| Field          | Type     | Null | Key | Default             | Extra                         |
+| ---------------|----------|------|-----|---------------------|-------------------------------|
+| id             | int(11)  | NO   | PRI | <null>              | auto_increment                |
+| 创建时间       | datetime | YES  |     | current_timestamp() | on update current_timestamp() |
+| 学院           | tinytext | YES  |     | <null>              |                               |
+| 班级           | tinytext | YES  |     | <null>              |                               |
+| 联系人         | tinytext | NO   |     | <null>              |                               |
+| 联系人联系方式 | tinytext | NO   |     | <null>              |                               |
+| 班群群号       | tinytext | YES  |     | <null>              |                               |
+| 班级群名       | tinytext | YES  |     | <null>              |                               |
+| 班级魔方名     | tinytext | YES  |     | <null>              |                               |
+| 不提醒         | bit(1)   | YES  |     | <null>              |                               |
+
+
 
 ## 注意
 这里的手机号码和班群群号都上传之前被修改过，并非物理世界的真实信息  
