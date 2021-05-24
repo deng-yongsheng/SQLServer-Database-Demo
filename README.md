@@ -39,7 +39,37 @@
 ## 主要操作：
 1.根据`班级表`和`令牌表`来查询班级和最 对应班级管理员的最新的一条token信息，qq群号，qq群名，班级名，学院名  
   
-2.根据`班级表`和`打卡完成记录`来查询某一天未完成打卡的班级  
+```sql
+  
+SELECT 班级表.id,班级表.`学院`,班级表.`班级`,班级表.`班级群名`,令牌表.token 
+FROM 令牌表,班级表
+WHERE 令牌表.`班级id`= 班级表.id 
+    and 令牌表.id IN 
+        (SELECT MAX(id) FROM 令牌表
+        GROUP BY 班级id) 
+    and 班级表.id NOT IN
+        (select 班级id from 打卡完成记录 where 完成时间 IN 
+        (select max(完成时间) FROM 打卡完成记录 
+        WHERE to_days(NOW()) = TO_DAYS(完成时间) group by 班级id))
+order by 班级表.id
+  
+```
+  
+2.根据`班级表`和`打卡完成记录`来查询当天已经完成了打卡的班级  
+```sql
+  
+SELECT 班级表.id,班级表.`班级`,班级表.`班级群名`,令牌表.token 
+FROM 令牌表,班级表
+WHERE 令牌表.`班级id`= 班级表.id 
+    and 令牌表.id IN 
+        (SELECT MAX(id) FROM 令牌表
+        GROUP BY 班级id) 
+    and 班级表.id IN
+        (select 班级id from 打卡完成记录 where 完成时间 IN 
+        (select max(完成时间) FROM 打卡完成记录 
+        WHERE to_days(NOW()) = TO_DAYS(完成时间) group by 班级id))
+  
+```
   
 3.根据`班级表`中的班级id，和一条新的管理员token 插入到`令牌表`  
   
